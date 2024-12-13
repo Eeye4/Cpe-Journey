@@ -1,0 +1,596 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+namespace GymWorkoutPlanner;
+public abstract class WorkoutPlan
+{
+    public abstract void GetWorkoutPlan();
+}
+
+public class HealthyLivingWorkout : WorkoutPlan
+{
+    public override void GetWorkoutPlan()
+    {
+        Console.Clear();
+        Console.WriteLine("Healthy Lifestyle Workout Plan:\n" +
+            "- Walking (10k steps)\n" +
+            "- Cycling (10-20 mins)\n" +
+            "- Jogging (10-30 mins)\n" +
+            "- Lunges (8-10 reps) (3 sets)\n" +
+            "- Daily Stretching (3-5 mins)\n" +
+            "- Zumba");
+    }
+}
+
+public class WeightLossWorkout : WorkoutPlan
+{
+    public override void GetWorkoutPlan()
+    {
+        Console.Clear();
+        Console.WriteLine("Weight Loss Workout Plan:\n" +
+            "- Jogging (5 km)\n" +
+            "- Cycling (20-30 mins)\n" +
+            "- High knees (30-60 secs) (3 sets)\n" +
+            "- Jumping Jacks (30-60 secs) (3 sets)\n" +
+            "- Burpees (5-10 reps) (3 sets)\n" +
+            "- Russian Twist (30-60 secs) (3 sets)\n" +
+            "- Mountain Climbers (30-60 secs) (3 sets)\n" +
+            "- Plank (30-60 secs) (3 sets)");
+    }
+}
+public class FemaleBodybuildingWorkout : WorkoutPlan
+{
+    public override void GetWorkoutPlan()
+    {
+        Console.Clear();
+        Console.WriteLine("Female Bodybuilding Workout Plan (Lower Body Focus):\n" +
+                          "- Hip Thrusts (8-12 reps) (3 sets) (MODERATE)\n" +
+                          "- Bulgarian Split Squats (8-12 reps per leg) (3 sets) (LIGHT)\n" +
+                          "- Leg Press (8-12 reps) (3 sets) (MODERATE)\n" +
+                          "- Glute Bridges (12-15 reps) (3 sets)\n" +
+                          "- Romanian Deadlifts (8-12 reps) (3 sets) (MODERATE)\n" +
+                          "- Step-ups (8-12 reps per leg) (3 sets)");
+        Console.WriteLine("\n\nNOTE (WEIGHT GUIDES):\n" +
+            "For beginners: Start with 5 lbs for each exercise and work up\n" +
+            " Light = 5 to 15 lbs\n" +
+            " Moderate = 15 to 30 lbs\n" +
+            " Heavy = 30 to heaviest weight you can lift ");
+    }
+}
+
+
+public class BodybuildingWorkout : WorkoutPlan
+{
+    public override void GetWorkoutPlan()
+    {
+        Console.Clear();
+        Console.WriteLine("Man Bodybuilding Workout Plan:\n" +
+            "- Flat Dumbell Press (8-12 reps) (3 sets) (MODERATE)\n" +
+            "- Incline Dumbell Press (8-12 reps) (3 sets) (MODERATE)\n" +
+            "- Barbell Squats (8-12 reps) (3 sets) (HEAVY)\n" +
+            "- Lateral Raises (8-12 reps) (3 sets) (LIGHT)\n" +
+            "- Shoulder Press (8-12 reps) (3 sets) (MODERATE)\n" +
+            "- Lat Pulldowns (8-12 reps) (3 sets) (MODERATE)\n" +
+            "- Pull-ups (until failure) (3 sets)");
+        Console.WriteLine("\n\nNOTE (WEIGHT GUIDES):\n" +
+            "For beginners: Start with 5 lbs for each exercise and work up\n" +
+            " Light = 5 to 15 lbs\n" +
+            " Moderate = 15 to 30 lbs\n" +
+            " Heavy = 30 lbs to heaviest weight you can lift ");
+    }
+}
+
+public class PowerliftingWorkout : WorkoutPlan
+{
+    public override void GetWorkoutPlan()
+    {
+        Console.Clear();    
+        Console.WriteLine("Powerlifting Workout Plan:\n" +
+            "- Barbell Squat (1-5 reps) (HEAVY)\n" +
+            "- Deadlift (1-5 reps) (HEAVY)\n" +
+            "- Bench Press (1-5 reps) (HEAVY)\n" +
+            "- Barbell Rows (1-5 reps) (HEAVY)\n" +
+            "- Shoulder Press( (1-5 reps) (HEAVY)");
+        Console.WriteLine("\n\nNOTE (WEIGHT GUIDES):\n" +
+            "For beginners: Start with 5 lbs for each exercise and work up\n" +
+            " Light = 5 to 15 lbs\n" +
+            " Moderate = 15 to 30 lbs\n" +
+            " Heavy = 30 lbs to heaviest weight you can lift ");
+    }
+}
+
+public class BMI
+{
+    public double Calculate(double weight, double heightInMeters)
+    {
+        return weight / (heightInMeters * heightInMeters);
+    }
+
+    public string GetClassification(double bmi)
+    {
+        if (bmi < 18.5) return "Underweight";
+        else if (bmi < 24.9) return "Normal weight";
+        else if (bmi < 29.9) return "Overweight";
+        else if (bmi < 34.9) return "Obese I";
+        else return "Obese II";
+    }
+}
+
+public class Person
+{
+    public string Username { get; set; }
+    public string Password { get; set; }
+    public double Weight { get; set; }
+    public double Height { get; set; }
+    public string Gender { get; set; }
+    public string FitnessGoal { get; set; }
+    public DateTime RegistrationDate { get; set; }
+    public DateTime? EndDate { get; set; }
+    public List<DateTime> LoginDates { get; set; }
+    public List<ProgressEntry> ProgressHistory { get; set; }
+
+    public Person(string username, string password)
+    {
+        Username = username;
+        Password = password;
+        RegistrationDate = DateTime.Now;
+        LoginDates = new List<DateTime>();
+        ProgressHistory = new List<ProgressEntry>();
+    }
+}
+
+public class ProgressEntry
+{
+    public DateTime LoginDate { get; set; }
+    public double Weight { get; set; }
+    public double Height { get; set; }
+    public double BMI { get; set; }
+    public string BMIClassification { get; set; }
+}
+
+public class Program
+{
+    private static List<Person> members = new List<Person>();
+
+    public static void Main()
+    {
+        DisplayWelcomeScreen();
+        LoadMembers();
+
+        while (true)
+        {
+            Console.WriteLine("Welcome to the Gym Workout Planner.");
+            Console.WriteLine("1. Register account");
+            Console.WriteLine("2. Login account");
+            Console.WriteLine("3. View Subscribed Members");
+            Console.WriteLine("4. Exit");
+            Console.Write("Choose an option: ");
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    Console.Clear();
+                    Register();
+                    break;
+                case "2":
+                    Console.Clear();
+                    Login();
+                    break;
+                case "3":
+                    Console.Clear();
+                    ViewMembers();
+                    break;
+                case "4":
+                    Console.Clear();
+                    SaveMembers();
+                    Console.WriteLine("Exiting program.");
+                    return;
+                default:
+                    Console.WriteLine("Invalid choice. Try again.");
+                    break;
+            }
+        }
+    }
+
+    private static void DisplayWelcomeScreen()
+    {
+        Console.Clear();
+
+        Console.WriteLine("  ____                  __        __         _               _   ");
+        Console.WriteLine(" / ___|_   _ _ __ ___   \\ \\      / /__  _ __| | _____  _   _| |_ ");
+        Console.WriteLine("| |  _| | | | '_ ` _ \\   \\ \\ /\\ / / _ \\| '__| |/ / _ \\| | | | __|");
+        Console.WriteLine("| |_| | |_| | | | | | |   \\ V  V / (_) | |  |   < (_) | |_| | |_ ");
+        Console.WriteLine(" \\____|\\__, |_| |_| |_|    \\_/\\_/ \\___/|_|  |_|\\_\\___/ \\__,_|\\__|");
+        Console.WriteLine("  ____  |___/                                                  ");
+        Console.WriteLine(" |  _ \\| | __ _ _ __  _ __   ___ _ __                          ");
+        Console.WriteLine(" | |_) | |/ _` | '_ \\| '_ \\ / _ \\ '__|                         ");
+        Console.WriteLine(" |  __/| | (_| | | | | | | |  __/ |                            ");
+        Console.WriteLine(" |_|   |_|\\__,_|_| |_|_| |_|\\___|_|                            ");
+        Console.WriteLine("  _____                _____                    _____                _____  ");
+        Console.WriteLine(" |     |______________|     |                  |     |______________|     | ");
+        Console.WriteLine(" |     |              |     |                  |     |              |     | ");
+        Console.WriteLine(" |     |              |     |                  |     |              |     | ");
+        Console.WriteLine(" |_____|              |_____|                  |_____|              |_____| ");
+        Console.WriteLine("    ||                  ||                        ||                  ||    ");
+        Console.WriteLine("    ||                  ||                        ||                  ||    ");
+        Console.WriteLine("    ||                  ||                        ||                  ||    ");
+        Console.WriteLine("  __||__________________||__                   ___||__________________||__  ");
+        Console.WriteLine(" |     |              |     |                 |     |              |     | ");
+        Console.WriteLine(" |     |              |     |                 |     |              |     | ");
+        Console.WriteLine(" |     |              |     |                 |     |              |     | ");
+        Console.WriteLine(" |_____|______________|_____|                 |_____|______________|_____| ");
+        Console.WriteLine();
+    }
+
+    private static void Register()
+    {
+        Console.Write("Enter username: ");
+        string username = Console.ReadLine();
+        Console.Write("Enter password: ");
+        string password = ReadPassword();
+
+        string gender;
+        while (true)
+        {
+            Console.Write("Enter gender (M/F): ");
+            gender = Console.ReadLine().ToUpper();
+            if (gender == "M" || gender == "F")
+                break;
+            Console.WriteLine("Invalid input. Please enter 'M' for Male or 'F' for Female.");
+        }
+
+        var person = new Person(username, password) { Gender = gender };
+        members.Add(person);
+        Console.WriteLine("Account registered successfully.");
+    }
+
+    private static void Login()
+    {
+        Console.Write("Enter username: ");
+        string username = Console.ReadLine();
+        Console.Write("Enter password: ");
+        string password = ReadPassword();
+
+        Person user = members.Find(u => u.Username == username && u.Password == password);
+        if (user != null)
+        {
+            user.LoginDates.Add(DateTime.Now);
+            UserMenu(user);
+        }
+        else
+        {
+            Console.WriteLine("Invalid credentials. Please try again.");
+        }
+    }
+    private static string ReadPassword()
+    {
+        string password = string.Empty;
+        ConsoleKey key;
+
+        do
+        {
+            var keyInfo = Console.ReadKey(intercept: true);
+            key = keyInfo.Key;
+
+            if (key == ConsoleKey.Backspace && password.Length > 0)
+            {
+                password = password.Substring(0, password.Length - 1);
+
+                Console.Write("\b \b");
+            }
+            else if (!char.IsControl(keyInfo.KeyChar))
+            {
+                password += keyInfo.KeyChar;
+                Console.Write("*");
+            }
+        }
+        while (key != ConsoleKey.Enter); 
+
+        Console.WriteLine(); 
+        return password;
+    }
+
+    private static void ViewMembers()
+    {
+        Console.WriteLine("Subscribed Members:");
+        foreach (var member in members)
+        {
+            Console.WriteLine($"- {member.Username}");
+        }
+    }
+
+    private static void UserMenu(Person user)
+    {
+        while (true)
+        {
+            Console.WriteLine($"\nWelcome, {user.Username}!");
+            Console.WriteLine("1. Calculate BMI");
+            Console.WriteLine("2. Select Fitness Goal");
+            Console.WriteLine("3. Track Progress");
+            Console.WriteLine("4. Finish Fitness Journey");
+            Console.WriteLine("5. Delete Account");
+            Console.WriteLine("6. Logout Account");
+            Console.Write("Choose an option: ");
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    Console.Clear();
+                    CalculateBMI(user);
+                    break;
+                case "2":
+                    Console.Clear();
+                    SelectFitnessGoal(user);
+                    break;
+                case "3":
+                    Console.Clear();
+                    TrackProgress(user);
+                    break;
+                case "4":
+                    Console.Clear();
+                    FinishJourney(user);
+                    return;
+                case "5":
+                    Console.Clear();
+                    DeleteAccount(user);
+                    return;
+                case "6":
+                    return;
+                default:
+                    Console.WriteLine("Invalid choice. Try again.");
+                    break;
+            }
+        }
+    }
+
+    private static void CalculateBMI(Person user)
+    {
+        Console.Clear();
+        Console.Write("Enter your weight (kg): ");
+        user.Weight = double.Parse(Console.ReadLine());
+        Console.Write("Enter your height (meters): ");
+        user.Height = double.Parse(Console.ReadLine());
+
+        if (user.Weight <= 0 || user.Height <= 0)
+        {
+            Console.WriteLine("Invalid input. Weight and height must be greater than 0.");
+            return;
+        }
+
+        BMI bmiCalc = new BMI();
+        double bmi = bmiCalc.Calculate(user.Weight, user.Height);
+        Console.WriteLine($"Your BMI is: {bmi:F2}");
+        Console.WriteLine($"Classification: {bmiCalc.GetClassification(bmi)}");
+    }
+
+    private static void SelectFitnessGoal(Person user)
+    {
+        Console.Clear();
+        Console.WriteLine("Select a fitness goal:");
+        Console.WriteLine("1. Healthy Lifestyle");
+        Console.WriteLine("2. Weight Loss");
+        Console.WriteLine("3. Bodybuilding");
+        Console.WriteLine("4. Powerlifting");
+        Console.Write("Choose an option: ");
+        string goalChoice = Console.ReadLine();
+
+        WorkoutPlan workout;
+        switch (goalChoice)
+        {
+            case "1":
+                workout = new HealthyLivingWorkout();
+                user.FitnessGoal = "Healthy Lifestyle";
+                break;
+            case "2":
+                workout = new WeightLossWorkout();
+                user.FitnessGoal = "Weight Loss";
+                break;
+            case "3":
+                if (user.Gender == "F")
+                    workout = new FemaleBodybuildingWorkout();
+                else
+                    workout = new BodybuildingWorkout();
+                user.FitnessGoal = "Bodybuilding";
+                break;
+            case "4":
+                workout = new PowerliftingWorkout();
+                user.FitnessGoal = "Powerlifting";
+                break;
+            default:
+                Console.WriteLine("Invalid choice.");
+                return;
+        }
+
+        workout.GetWorkoutPlan();
+    }
+
+
+
+    private static void TrackProgress(Person user)
+    {
+        Console.Clear();
+        Console.WriteLine("\n============================================================");
+        Console.WriteLine("                       PROGRESS TRACKER                     ");
+        Console.WriteLine("============================================================\n");
+
+        Console.WriteLine("-----------------------------------------------------------------------------------------------------");
+        Console.WriteLine("|       DATE & TIME      |          WEIGHT          |          BMI          |     CLASSIFICATION     |");
+        Console.WriteLine("-----------------------------------------------------------------------------------------------------");
+
+        if (user.Weight > 0 && user.Height > 0)
+        {
+            BMI bmiCalc = new BMI();
+            double bmi = bmiCalc.Calculate(user.Weight, user.Height);
+            string classification = bmiCalc.GetClassification(bmi);
+
+            var currentEntry = new ProgressEntry
+            {
+                LoginDate = DateTime.Now,
+                Weight = user.Weight,
+                Height = user.Height,
+                BMI = bmi,
+                BMIClassification = classification
+            };
+            user.ProgressHistory.Add(currentEntry);
+        }
+
+        if (user.ProgressHistory.Any())
+        {
+            var displayEntries = user.ProgressHistory
+                .OrderByDescending(p => p.LoginDate)
+                .Take(6)
+                .ToList();
+
+            foreach (var entry in displayEntries)
+            {
+                Console.WriteLine($"|  {entry.LoginDate:yyyy-MM-dd HH:mm:ss}   |{entry.Weight,20:F2}      |{entry.BMI,20:F2}   | {entry.BMIClassification,-20}   |");
+            }
+        }
+        else
+        {
+            Console.WriteLine("|                          No data available. Please calculate BMI first.                           |");
+        }
+
+        Console.WriteLine("------------------------------------------------------------------------------------------------------");
+    }
+
+    private static void FinishJourney(Person user)
+    {
+        Console.Clear();
+        string choice;
+        do
+        {
+            Console.Clear();
+            Console.Write("Have you finished your fitness journey? (y/n): ");
+            choice = Console.ReadLine().ToLower();
+
+            if (choice != "y" && choice != "n")
+            {
+                Console.WriteLine("Invalid input. Please enter 'y' for yes or 'n' for no.");
+            }
+
+        } while (choice != "y" && choice != "n");
+
+        if (choice == "y")
+        {
+            user.EndDate = DateTime.Now;
+            Console.Write("Enter your final weight: ");
+            double finalWeight = double.Parse(Console.ReadLine());
+
+            double weightChange = user.Weight - finalWeight;
+            int days = (user.EndDate - user.RegistrationDate).Value.Days;
+
+            if (weightChange > 0)
+            {
+                Console.WriteLine($"You have lost {weightChange:F2} kg in {days} days. Congratulations!");
+            }
+            else if (weightChange < 0)
+            {
+                Console.WriteLine($"You have gained {-weightChange:F2} kg in {days} days.");
+            }
+            else
+            {
+                Console.WriteLine($"Your weight has remained the same over {days} days.");
+            }
+        }
+    }
+
+    private static void DeleteAccount(Person user)
+    {
+        Console.Clear();
+        string choice;
+        do
+        {
+            Console.Clear();
+            Console.Write("Do you want to delete your account? (y/n): ");
+            choice = Console.ReadLine().ToLower();
+
+            if (choice != "y" && choice != "n")
+            {
+                Console.WriteLine("Invalid input. Please enter 'y' for yes or 'n' for no.");
+            }
+
+        } while (choice != "y" && choice != "n");
+
+        if (choice == "y")
+        {
+            members.Remove(user);
+            Console.WriteLine("Account deleted successfully.");
+        }
+    }
+
+    private const string MembersFile = "members.txt";
+    private const string MemberDetailsFile = "member_details.txt";
+    private const string ProgressLogFile = "progress_log.txt";
+
+    private static void LoadMembers()
+    {
+        if (File.Exists(MembersFile))
+        {
+            members = File.ReadAllLines(MembersFile)
+                .Select(line => line.Split(','))
+                .Select(parts => new Person(parts[0], parts[1]) { Gender = parts[2] })
+                .ToList();
+        }
+
+        if (File.Exists(MemberDetailsFile))
+        {
+            var detailLines = File.ReadAllLines(MemberDetailsFile);
+            foreach (var line in detailLines)
+            {
+                var parts = line.Split(',');
+                var member = members.FirstOrDefault(m => m.Username == parts[0]);
+                if (member != null)
+                {
+                    member.Weight = double.Parse(parts[1]);
+                    member.Height = double.Parse(parts[2]);
+                    member.FitnessGoal = parts[3];
+                    member.RegistrationDate = DateTime.Parse(parts[4]);
+                    member.EndDate = string.IsNullOrEmpty(parts[5]) ? null : DateTime.Parse(parts[5]);
+                }
+            }
+        }
+
+        if (File.Exists(ProgressLogFile))
+        {
+            var progressLines = File.ReadAllLines(ProgressLogFile);
+            foreach (var line in progressLines)
+            {
+                var parts = line.Split(',');
+                var member = members.FirstOrDefault(m => m.Username == parts[0]);
+                if (member != null)
+                {
+                    var progressEntry = new ProgressEntry
+                    {
+                        LoginDate = DateTime.Parse(parts[1]),
+                        Weight = double.Parse(parts[2]),
+                        Height = double.Parse(parts[3]),
+                        BMI = double.Parse(parts[4]),
+                        BMIClassification = parts[5]
+                    };
+                    member.ProgressHistory.Add(progressEntry);
+                }
+            }
+        }
+    }
+
+
+    private static void SaveMembers()
+    {
+        File.WriteAllLines(MembersFile,
+            members.Select(m => $"{m.Username},{m.Password},{m.Gender}"));
+
+        File.WriteAllLines(MemberDetailsFile,
+            members.Select(m =>
+                $"{m.Username},{m.Weight},{m.Height},{m.FitnessGoal},{m.RegistrationDate},{m.EndDate}"));
+
+        File.WriteAllLines(ProgressLogFile,
+            members.SelectMany(m =>
+                m.ProgressHistory.Select(p =>
+                    $"{m.Username},{p.LoginDate},{p.Weight},{p.Height},{p.BMI},{p.BMIClassification}")));
+    }
+
+}
